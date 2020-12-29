@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>GoIM</title>
+    <style>
+        body {
+            background-color: #ddd;
+        }
+
+        a:link {
+            text-decoration: none;
+        }
+
+        .contain {
+            background: #fff;
+            width: 1000px;
+            height: 700px;
+            overflow: hidden;
+            position: relative;
+            margin: 100px auto;
+        }
+
+        .left-list {
+            width: 270px;
+            border-right: 1px solid #eee;
+            display: block;
+            height: 700px;
+            float: left;
+            overflow-y: auto;
+        }
+
+        .span-title {
+            position: absolute;
+            background: #fff;
+            width: 270px;
+            height: 40px;
+            text-align: center;
+            padding-top: 14px;
+            color: #444;
+            border-bottom: 1px solid #eee;
+        }
+
+        .left-list ul {
+            padding-left: 0px;
+            padding-top: 50px;
+        }
+
+        .left-list ul li {
+            margin: 0;
+            list-style: none;
+            padding-left: 10px;
+        }
+
+        .user-list {
+            height: 50px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .user-list:hover {
+            background: #eeeeee;
+        }
+
+        .user-list a {
+            height: 50px;
+            width: 100%;
+            display: block;
+        }
+
+        .user-list a img {
+            width: 35px;
+            height: 35px;
+            border-radius: 10%;
+            margin-top: 8px;
+            float: left;
+        }
+
+        .user-list a span {
+            color: #666;
+            font-size: 12px;
+            padding: 17px 10px;
+            float: left;
+        }
+
+        .user-list a em {
+            font-size: 10px;
+            padding: 17px 10px;
+            float: right;
+            font-style: normal;
+        }
+
+        .online {
+            color: mediumseagreen;
+        }
+
+        .offline {
+            color: lightcoral;
+        }
+
+        .right-window {
+            float: right;
+            width: 725px;
+            height: 700px;
+        }
+
+        .message-view {
+            width: 100%;
+            height: 505px;
+            border-bottom: 1px solid #eee;
+            margin-top: 45px;
+            overflow-y: auto;
+        }
+
+        .message-input {
+            width: 100%;
+            height: 150px;
+            padding-top: 5px;
+        }
+
+        .message-input textarea {
+            width: 710px;
+            height: 100px;
+            border: none !important;
+            outline: none;
+            color: #555;
+            line-height: 18px;
+        }
+
+        .message-input span {
+            float: right;
+            line-height: 30px;
+            font-size: 12px;
+            margin-right: 10px;
+            color: red;
+            display: none;
+        }
+
+        .send {
+            float: right;
+            margin-right: 20px;
+            width: 100px;
+            height: 30px;
+            background: #fff;
+            border-radius: 5%;
+            border: 1px solid #aaa;
+            color: #606975;
+        }
+
+        .send:hover, .send:visited, .send:focus {
+            color: green;
+            border: 1px solid green;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .send:active {
+            color: green;
+            border: 1px solid #eee;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .message {
+            padding: 10px;
+        }
+
+        .info-other {
+            display: block;
+            float: left;
+        }
+
+        .info-other img {
+            float: left;
+            width: 35px;
+            height: 35px;
+            border-radius: 10%;
+            margin-top: 16px;
+            cursor: pointer;
+        }
+
+        .info-other blockquote {
+            background: #687382;
+            color: #fff;
+            font-size: 14px;
+            line-height: 25px;
+            padding: 5px;
+            text-align: justify;
+            margin-top: 5px;
+        }
+
+        .info-other em {
+            font-style: normal;
+            font-size: 12px;
+            padding-left: 8px;
+            padding-top: 15px;
+            display: inline-block;
+            color: #666;
+        }
+
+        .info-mine {
+            display: block;
+            float: right;
+            text-align: right;
+            clear: both;
+        }
+
+        .info-mine img {
+            float: right;
+            width: 35px;
+            height: 35px;
+            border-radius: 10%;
+            margin-top: 16px;
+            cursor: pointer;
+        }
+
+        .info-mine blockquote {
+            background: #b1dfff;
+            color: #000;
+            font-size: 14px;
+            line-height: 25px;
+            padding: 5px;
+            margin-top: 5px;
+            text-align: justify;
+        }
+
+        .info-mine em {
+            font-style: normal;
+            font-size: 12px;
+            padding-right: 8px;
+            padding-top: 15px;
+            display: inline-block;
+            color: #666;
+        }
+
+        .message-title {
+            position: absolute;
+            background: #fff;
+            width: 725px;
+            height: 40px;
+            text-align: center;
+            padding-top: 14px;
+            color: #444;
+            border-bottom: 1px solid #eee;
+        }
+
+        .system-message {
+            display: block;
+            float: left;
+            text-align: center;
+            width: 100%;
+            margin: 5px auto;
+        }
+
+        .system-message span {
+            color: #aaa;
+            font-size: 9px;
+            -moz-user-select: none; /*火狐*/
+            -webkit-user-select: none; /*webkit浏览器*/
+            -ms-user-select: none; /*IE10*/
+            -khtml-user-select: none; /*早期浏览器*/
+            user-select: none;
+        }
+
+        /* 设置滚动条的样式 */
+        ::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        /* 滚动槽 */
+        ::-webkit-scrollbar-track {
+            border-radius: 10px;
+        }
+
+        /* 滚动条滑块 */
+        ::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            background: #aaa;
+            opacity: 0.5%;
+        }
+
+        ::-webkit-scrollbar-thumb:window-inactive {
+            background: #aaa;
+            opacity: 0.5%;
+        }
+    </style>
+</head>
+<body>
+<div class="contain">
+    <div class="left-list">
+        <span class="span-title">用户列表</span>
+        <ul>
+            <li class="user-list">
+                <a href="">
+                    <img src="https://psyduck.liujiayang.cn/avatar.jpeg" alt="">
+                    <span>PsyDuck</span>
+                    <em class="online">[在线]</em>
+                </a>
+            </li>
+            <li class="user-list">
+                <a href="">
+                    <img src="https://psyduck.liujiayang.cn/avatar.jpeg" alt="">
+                    <span>ghahahaa</span>
+                    <em class="offline">[离线]</em>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="right-window">
+        <span class="message-title">在线人数：20</span>
+        <div class="message-view">
+            <div class="message">
+                <div class="info-other">
+                    <img src="https://psyduck.liujiayang.cn/avatar.jpeg" alt="">
+                    <em>ghahahaa</em>
+                    <blockquote>黄梅时节家家雨，青草池塘处处蛙。
+                        有约不来过夜半，闲敲棋子落灯花。
+                    </blockquote>
+                </div>
+                {{/*<div class="system-message">
+                    <span>PsyDuck 进入聊天室</span>
+                </div>
+                <div class="info-mine">
+                    <img src="https://psyduck.liujiayang.cn/avatar.jpeg" alt="">
+                    <em>PsyDuck</em>
+                    <blockquote>
+                        北国风光，千里冰封，万里雪飘。
+
+                        望长城内外，惟余莽莽；
+
+                        大河上下，顿失滔滔。
+
+                        山舞银蛇，原驰蜡象，
+
+                        欲与天公试比高。
+
+                        须晴日，看红装素裹，分外妖娆。
+
+                        江山如此多娇，引无数英雄竞折腰。
+
+                        惜秦皇汉武，略输文采；
+
+                        唐宗宋祖，稍逊风骚。
+
+                        一代天骄，成吉思汗，
+
+                        只识弯弓射大雕。
+
+                        俱往矣，数风流人物，还看今朝。
+                    </blockquote>
+                </div>*/}}
+            </div>
+        </div>
+        <div class="message-input">
+            <textarea rows="6" name="message" id="message" placeholder="" style="resize:none;"></textarea>
+            <button type="submit" class="send" onclick="send()">发 送</button>
+            <span></span>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+<script>
+    var url = "ws://" + window.location.host + "/ws";
+    var ws = new WebSocket(url);
+
+    ws.onopen = function (evt) {
+        var name = "psyDuck";
+        var html = `<div class="system-message">
+                    <span>${name} 进入群聊</span>
+                </div>`;
+        $(".message").append(html);
+        scrollToBottom();
+    };
+
+    ws.onmessage = function (evt) {
+        console.log(evt)
+        var html = `<div class="info-mine">
+                    <img src="https://psyduck.liujiayang.cn/avatar.jpeg" alt="">
+                    <em>PsyDuck</em>
+                    <blockquote>
+                        ${evt.data}
+                    </blockquote>
+                </div>`;
+        $(".message").append(html);
+        scrollToBottom();
+        // ws.close();
+    };
+
+    ws.onclose = function (evt) {
+        var name = "psyDuck";
+        var html = `<div class="system-message">
+                    <span>${name} 退出群聊</span>
+                </div>`;
+        $(".message").append(html);
+        scrollToBottom();
+    };
+
+    function send() {
+        var input = $("#message").val();
+        if (input.trim() == "") {
+            $('.message-input span').text("不能发送空消息").fadeIn();
+            setTimeout(function () {
+                $('.message-input span').fadeOut();
+            }, 300)
+            return false;
+        }
+        ws.send(input);
+        $("#message").val('');
+    }
+
+    function scrollToBottom() {
+        var scrollHeight = $(".message-view").prop("scrollHeight");
+        $(".message-view").scrollTop(scrollHeight, 1000);
+    }
+</script>
